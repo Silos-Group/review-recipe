@@ -25,6 +25,10 @@ on:
         description: "Optional model for the review (Claude Code's default when empty)."
         type: string
         default: ""
+      show_full_output:
+        description: "Print the review's full conversation in the run log, for diagnosing a run. Leave off."
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -60,6 +64,7 @@ jobs:
           anthropic_service_account_id: ${{ inputs.service_account_id }}
           anthropic_organization_id: ${{ inputs.organization_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          show_full_output: ${{ inputs.show_full_output }}
           prompt: "/silos-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }} --head ${{ github.event.pull_request.head.sha }}"
           # A HIPAA-configured Claude org rejects beta features such as context_management; sub-reviewers must run in
           # the foreground, or the job ends before they report and nothing is posted (review-standard §6).
