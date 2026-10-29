@@ -7,7 +7,7 @@ disable-model-invocation: false
 <!--
 Derived from Anthropic's code-review command (anthropics/claude-plugins-official, plugins/code-review,
 commit 9780cf407f5593727b668bae95a0c4ae2e0de1ae), Apache License 2.0. Changed by Silos Group, 2026-10-28:
-step 1 no longer skips a pull request Claude has already reviewed; steps 1b and 6b add re-review (earlier
+step 1 no longer skips a pull request Claude has already reviewed, nor one that looks trivial; steps 1b and 6b add re-review (earlier
 findings are checked as fixed or still open, and never re-posted); the summary comment records the reviewed
 commit and is always posted on a re-review. Everything else is unchanged. See NOTICE.
 -->
@@ -23,10 +23,12 @@ To do this, follow these steps precisely:
 
 1. Launch a haiku agent to check if any of the following are true:
    - The pull request is closed
-   - The pull request is a draft
-   - The pull request does not need code review (e.g. automated PR, trivial change that is obviously correct)
+   - The pull request is a draft (it is reviewed when it is marked ready for review)
 
    If any condition is true, stop and do not proceed.
+
+   **Small or "obviously correct" changes are reviewed too.** Never skip a pull request because it looks trivial:
+   a silent skip cannot be told apart from a broken review.
 
    **Every push is reviewed again.** A pull request that already has a review from this command is NOT skipped.
 
