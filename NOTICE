@@ -1,0 +1,11 @@
+review-recipe
+Copyright 2026 Silos Group
+
+This repository is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+plugins/silos-review/commands/review.md is derived from the code-review command in Anthropic's
+claude-plugins-official repository (plugins/code-review/commands/code-review.md), licensed under the
+Apache License, Version 2.0. Silos Group changed it on 2026-10-28 so that every push to a pull request is
+reviewed again: step 1 no longer skips a pull request that already has a review, steps 1b and 6b were added
+to check earlier findings as fixed or still open and never re-post them, and the summary comment now records
+the reviewed commit and is always posted on a re-review. The file's header comment records the upstream commit.

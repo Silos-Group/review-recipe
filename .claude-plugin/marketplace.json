@@ -1,0 +1,11 @@
+{
+  "name": "silos-review-recipe",
+  "owner": { "name": "Silos Group" },
+  "plugins": [
+    {
+      "name": "silos-review",
+      "source": "./plugins/silos-review",
+      "description": "A Claude review of a pull request that runs on every push."
+    }
+  ]
+}
