@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr comment:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh api repos:*), mcp__github_inline_comment__create_inline_comment
+allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr comment:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), mcp__github_inline_comment__create_inline_comment
 description: Code review a pull request; every push is reviewed again
 disable-model-invocation: false
 ---
@@ -33,11 +33,11 @@ To do this, follow these steps precisely:
    **Every push is reviewed again.** A pull request that already has a review from this command is NOT skipped.
 
 1b. Launch a haiku agent to find earlier reviews by this command on this pull request: summary comments that start
-   with "## Code review" (`gh pr view <PR> --comments`) and inline review comments posted by the same reviewer
-   (`gh api repos/<owner>/<repo>/pulls/<PR>/comments`). Return:
-   - whether this is a re-review (any earlier review exists);
-   - the commit the last review covered, from the "Reviewed at:" line of the latest summary comment;
-   - every earlier finding: file, line, and a one-line description.
+   with "## Code review" (`gh pr view <PR> --comments`). Every summary lists the findings it posted, so these
+   comments alone are the record; do not call `gh api`. Return:
+   - whether this is a re-review (any earlier summary exists);
+   - the commit the last review covered, from the "Reviewed at:" line of the latest summary;
+   - every earlier finding listed in those summaries: file, line, and a one-line description.
 
 Note: Still review Claude generated PR's.
 
@@ -90,7 +90,9 @@ Note: Still review Claude generated PR's.
 
    If `--comment` argument IS provided and NO issues were found, post a summary comment using `gh pr comment` and stop.
 
-   If `--comment` argument IS provided and issues were found, post the summary comment too, then continue to step 8.
+   If `--comment` argument IS provided and issues were found, post the summary comment too, listing every finding
+   it is about to post inline (file, line, one line each), then continue to step 8. The next review reads these
+   lists to know what was already said.
 
    On a re-review, the summary comment is always posted. It says how many new issues were found, and which earlier
    findings are now fixed and which are still open (one line each, linking the earlier comment).

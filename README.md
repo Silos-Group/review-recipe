@@ -38,18 +38,23 @@ permissions:
   id-token: write
 concurrency:
   group: claude-review-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  cancel-in-progress: false  # queue: a review killed mid-post leaves findings the next review cannot see
 jobs:
   review:
     uses: Silos-Group/review-recipe/.github/workflows/review.yml@<commit>
     with:
-      recipe_ref: <same commit>
       federation_rule_id: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
       service_account_id: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
       organization_id: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
 ```
 
-Pin both to the same full commit of this repo, and move the pin on purpose.
+Pin a full commit of this repo, and move the pin on purpose. The workflow installs the review command from that same commit, which GitHub reports in the run's identity token.
+
+## What the review may do
+
+It reads the pull request (`gh pr view`, `gh pr diff`, `gh issue view`, `gh search`), posts one summary comment
+(`gh pr comment`) and inline comments. It has no `gh api`, because `gh api` accepts write methods and the review
+reads untrusted pull request text.
 
 ## Use it in a local Claude Code session
 
