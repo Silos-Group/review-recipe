@@ -1,0 +1,7 @@
+{
+  "name": "silos-review",
+  "description": "A Claude review of a pull request that runs on every push: earlier findings are checked as fixed or still open and never re-posted. Derived from Anthropic's code-review plugin.",
+  "version": "0.1.0",
+  "author": { "name": "Silos Group" },
+  "license": "Apache-2.0"
+}
